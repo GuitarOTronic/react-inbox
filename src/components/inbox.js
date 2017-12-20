@@ -6,8 +6,27 @@ const Inbox = (props) => (
 
   <div>
 
-    <Toolbar removeLabel = {props.removeLabel} applyLabel = {props.applyLabel} markAsRead={props.markAsRead} markAsUnread={props.markAsUnread} state={props.state} toggleSelected={props.toggleSelected} />
-    <MessageList state={props.state} isChecked={props.isChecked} toggleSelected={props.toggleSelected} isStarred={props.isStarred}/>
+    <Toolbar
+      enableBtns={props.enableBtns}
+      disableBtns={props.disableBtns}
+      removeLabel = {props.removeLabel}
+      applyLabel = {props.applyLabel}
+      markAsRead={props.markAsRead}
+      markAsUnread={props.markAsUnread}
+      state={props.state}
+      toggleSelected={props.toggleSelected}
+      isToolBarChecked={props.isToolBarChecked}
+      isChecked={props.state.isChecked}
+      deleteMessage ={ props.deleteMessage}
+    />
+    <MessageList
+      state={props.state}
+      isChecked={props.state.isChecked}
+      toggleSelected={props.toggleSelected}
+      isStarred={props.isStarred}
+      setMinusCheckbox = {props.setMinusCheckbox}
+
+    />
   </div>
 );
 

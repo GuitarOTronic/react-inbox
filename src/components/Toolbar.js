@@ -3,7 +3,6 @@ import React from 'react'
 class Toolbar extends React.Component{
   constructor(props){
     super(props)
-    this.checkboxCl = 'fa fa-square-o'
     this.messageArr = props.state.messages
   }
 
@@ -15,51 +14,29 @@ class Toolbar extends React.Component{
     this.props.removeLabel(event.target.value)
   }
 
-  
   isSelected=(message) =>{
     return message.selected ? true : false
   }
 
-  isToolBarChecked= () => {
-    let messages = this.props.state.messages
-    let numberSelected = 0
-    for(let i = 0; i<messages.length; i++){
-      if(messages[i] === true){
-          numberSelected++
-      }
-    }
-
-
-    if(messages.every(this.isSelected)){
-      console.log('none selected');
-
-      let selectedMessages = messages.map((message, i) => {
-        if(message.selected){
-          // unselect all
-        this.props.toggleSelected(message.id)
-        this.checkboxCl='fa fa-square-o'
-
-        }
-        return message
-      })
-    }
-    else if(!messages.every(this.isSelected)){
-      console.log('all selected');
-      let selectedMessages = messages.map((message, i) => {
-        if(!message.selected){
-          this.props.toggleSelected(message.id)
-        }
-        this.checkboxCl='fa fa-check-square-o'
-        return message
-      })
-    }
+  fireIsToolBarChecked = () => {
+    this.props.isToolBarChecked()
   }
 
   fireMarkAsRead = () => {
     this.props.markAsRead()
   }
+
   fireMarkAsUnread = () => {
     this.props.markAsUnread()
+  }
+
+  fireDeleteMessage =() => {
+    this.messageArr.map(message => {
+      if(this.isSelected(message)){
+        this.props.deleteMessage(message)
+      }
+      return message
+    })
   }
 
   render(){
@@ -67,37 +44,37 @@ class Toolbar extends React.Component{
       <div className="row toolbar">
         <div className="col-md-12">
           <p className="pull-right">
-            <span className="badge badge">2</span>
+            <span className="badge badge">{this.props.state.unread}</span>
             unread messages
           </p>
 
           <button className="btn btn-default">
-            <i className={`${this.checkboxCl}`} onClick={this.isToolBarChecked}></i>
+            <i disabled={`${this.disabled}`} className={`${this.props.isChecked}`} onClick={this.fireIsToolBarChecked}></i>
           </button>
 
-          <button className="btn btn-default" onClick={this.fireMarkAsRead}>
+          <button disabled={this.props.state.disabled} className="btn btn-default" onClick={this.fireMarkAsRead}>
             Mark As Read
           </button>
 
-          <button className="btn btn-default" onClick={this.fireMarkAsUnread}>
+          <button disabled={this.props.state.disabled} className="btn btn-default" onClick={this.fireMarkAsUnread}>
             Mark As Unread
           </button>
 
-          <select placeholder='Apply Label' className="form-control label-select" onChange={this.fireApplyLabel}>
+          <select placeholder='Apply Label' disabled={this.props.state.disabled} className="form-control label-select" onChange={this.fireApplyLabel}>
             <option>Apply label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <select placeholder='Remove Label' className="form-control label-select" onChange={this.fireRemoveLabel}>
+          <select placeholder='Remove Label' disabled={this.props.state.disabled} className="form-control label-select" onChange={this.fireRemoveLabel}>
             <option>Remove label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <button className="btn btn-default">
+          <button disabled={this.props.state.disabled} onClick ={ this.fireDeleteMessage } className="btn btn-default">
             <i className="fa fa-trash-o"></i>
           </button>
         </div>

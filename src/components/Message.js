@@ -3,7 +3,9 @@ import Labels from './Labels'
 
 const Message = (props) => {
   let selected = ''
-  let isChecked = props.isChecked
+
+
+
 
   function fireToggleSelected(){
     let allMessages = props.allMessages
@@ -17,10 +19,11 @@ const Message = (props) => {
     })
 
     if(selectedCount > 0 && selectedCount < allMessages.length){
-      console.log('minus thing');
-      // props.isChecked='fa fa-minus-square-o'
+      props.setMinusCheckbox()
     }
-
+    else {
+      props.setMinusCheckbox(selectedCount)
+    }
   }
 
   function fireIsStarred(){
@@ -30,7 +33,9 @@ const Message = (props) => {
   if(props.subject.selected){
     selected = 'selected'
   }
-  return (
+
+     return (
+
     <div>
       <div className={props.subject.read ? `row message read ${selected}`  : `row message unread ${selected}`}>
         <div className="col-xs-1">
